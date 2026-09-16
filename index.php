@@ -48,7 +48,7 @@ if ($game === 'PUBGM') {
     }
 
     $now = time();
-    $expectedToken = md5('PUBG-' . $userKey . '-' . $serial . '-MISHRAJI');
+    $expectedToken = md5('PUBGM-' . $userKey . '-' . $serial . '-MISHRAJI');
 
     respond([
         'status' => true,
