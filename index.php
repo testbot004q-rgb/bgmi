@@ -54,19 +54,19 @@ if ($game === 'PUBGM') {
         'status' => true,
         'reason' => 'OK',
         'data' => [
-            'token'         => $expectedToken,
-            'rng'           => $now,
-            'EXP'           => gmdate('Y-m-d', $now + (365 * 86400)),
-            'ESP'           => 'ON',
-            'Item'          => 'ON',
-            'AIM'           => 'ON',
-            'Memory'        => 'ON',
-            'Floating'      => 'ON',
-            'Setting'       => 'ON',
-            'SilentAim'     => 'ON',
-            'BulletTrack'   => 'ON',
-            'ALL_MENU_CODE' => ''
-        ]
+        'token' => $expectedToken,
+        'rng' => $now,
+        'EXP' => gmdate('Y-m-d H:i:s', $now + (365 * 86400)),
+        'ESP' => 'ON',
+        'Item' => 'ON',
+        'AIM' => 'ON',
+        'Memory' => 'ON',
+        'Floating' => 'ON',
+        'Setting' => 'ON',
+        'SilentAim' => 'ON',
+        'BulletTrack' => 'ON',
+        'ALL_MENU_CODE' => ''
+    ]
     ]);
 }
 
