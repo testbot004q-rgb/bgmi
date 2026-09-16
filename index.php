@@ -22,7 +22,7 @@ $game = isset($_POST['game']) ? trim((string) $_POST['game']) : '';
 $userKey = isset($_POST['user_key']) ? trim((string) $_POST['user_key']) : '';
 $serial = isset($_POST['serial']) ? trim((string) $_POST['serial']) : '';
 
-if ($game !== 'PUBGM') {
+if ($game == 'PUBGM') {
     $validKeys = ['demo123'];
     if ($userKey === '' || $serial === '') {
         respond([
