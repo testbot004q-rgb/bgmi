@@ -72,7 +72,8 @@ if ($game == 'PUBGM') {
             'ALL_MENU_CODE' => ''
         ]
     ]);
-}else{
+}
+else {
     $GAME_NAME = 'PUBG';
     $AUTH_SECRET = 'Vm8Lk7Uj2JmsjCPVPVjrLa7zgfx3uz9E';
     
