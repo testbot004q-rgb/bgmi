@@ -65,7 +65,7 @@ if ($game === 'PUBGM') {
         'Setting' => 'ON',
         'SilentAim' => 'ON',
         'BulletTrack' => 'ON',
-        'ALL_MENU_CODE' => ''
+        'ALL_MENU_CODE' => 'on'
     ]
     ]);
 }
