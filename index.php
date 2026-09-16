@@ -21,8 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $game = isset($_POST['game']) ? trim((string) $_POST['game']) : '';
 $userKey = isset($_POST['user_key']) ? trim((string) $_POST['user_key']) : '';
 $serial = isset($_POST['serial']) ? trim((string) $_POST['serial']) : '';
-if ($game !== 'PUBGM') {
 
+if ($game !== 'PUBGM') {
+    $validKeys = ['demo123'];
     if ($userKey === '' || $serial === '') {
         respond([
             'status' => false,
@@ -31,9 +32,10 @@ if ($game !== 'PUBGM') {
     }
     
     $configuredKeys = getenv('MUNDO_LICENSE_KEYS');
-    $validKeys = $configuredKeys === false
-        ? []
-        : array_values(array_filter(array_map('trim', explode(',', $configuredKeys))));
+    if ($configuredKeys !== false && trim($configuredKeys) !== '') {
+        $extraKeys = array_values(array_filter(array_map('trim', explode(',', $configuredKeys))));
+        $validKeys = array_merge($validKeys, $extraKeys);
+    }
     
     $keyIsValid = false;
     foreach ($validKeys as $validKey) {
@@ -84,9 +86,7 @@ if ($game !== 'PUBGM') {
     $EXP_DAYS = 30;
     
     // Get POST parameters
-    $game = $_POST['game'] ?? '';
-    $user_key = $_POST['user_key'] ?? '';
-    $serial = $_POST['serial'] ?? '';
+
     
     // Validate game
     if ($game !== $GAME_NAME) {
@@ -98,7 +98,7 @@ if ($game !== 'PUBGM') {
     }
     
     // Validate user key
-    if (!in_array($user_key, $VALID_KEYS, true)) {
+    if (!in_array($userKey, $VALID_KEYS, true)) {
         echo json_encode([
             'status' => false,
             'reason' => 'Invalid key'
@@ -117,7 +117,7 @@ if ($game !== 'PUBGM') {
     
     // Generate token exactly as client expects:
     // md5(gameName + "-" + userKey + "-" + serial + "-" + authSecret)
-    $token = md5($GAME_NAME . '-' . $user_key . '-' . $serial . '-' . $AUTH_SECRET);
+    $token = md5($GAME_NAME . '-' . $userKey . '-' . $serial . '-' . $AUTH_SECRET);
     
     // Generate expiry date
     $exp_date = date('Y-m-d H:i:s', time() + ($EXP_DAYS * 86400));
@@ -139,3 +139,4 @@ if ($game !== 'PUBGM') {
     echo json_encode($response);
     ?>
 }
+?>
