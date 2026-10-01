@@ -114,6 +114,45 @@ elseif ($game === 'PUBG') {
 }
 
 // ============================================================
+// APP 3: VIP
+// ============================================================
+elseif ($game === 'VIP') {
+    if ($userKey === '' || $serial === '' || $game === '') {
+    http_response_code(400);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing user_key, serial, or game.'
+    ]);
+    exit;
+}
+
+$validKeys = ['admin', 'demo123', '123456'];
+$valid = in_array($userKey, $validKeys, true);
+
+if (!$valid) {
+    http_response_code(401);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Invalid key.'
+    ]);
+    exit;
+}
+
+$token = hash('sha256', $key . ':' . $uuid . ':' . time());
+
+echo json_encode([
+    'success' => true,
+    'message' => 'Login successful.',
+    'data' => [
+        'token' => $token,
+        'rng' => time() + 3600,
+        'EXP' => '9999'
+    ]
+]);
+}
+
+
+// ============================================================
 // Unknown game
 // ============================================================
 else {
