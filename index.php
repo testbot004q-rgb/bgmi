@@ -159,24 +159,25 @@ echo json_encode([
 
 elseif ($game === 'YADAV') {
     if ($userKey === '' || $serial === '' || strlen($userKey) > 256 || strlen($serial) > 128) {
-        respond(['status' => false, 'reason' => 'Invalid request'], 400);
+        respond(['status' => false, 'reason' => 'Invalid request']);
     }
 
     $sharedSecret = 'Vm8Lk7Uj2JmsjCPVPVjrLa7zgfx3uz9E';
+    $validKeys = ['demo123'];
 
-    $predefinedKeys = [
-        'demo123' => '2099-12-31 23:59:59',
-    ];
-
-    if (!array_key_exists($userKey, $predefinedKeys)) {
-        respond(['status' => false, 'reason' => 'Invalid license key'], 401);
+    $keyIsValid = false;
+    foreach ($validKeys as $validKey) {
+        if (hash_equals($validKey, $userKey)) {
+            $keyIsValid = true;
+            break;
+        }
     }
 
-    $expiresAt = strtotime($predefinedKeys[$userKey]);
-    if ($expiresAt === false || $expiresAt <= time()) {
-        respond(['status' => false, 'reason' => 'License expired'], 401);
+    if (!$keyIsValid) {
+        respond(['status' => false, 'reason' => 'Invalid license key']);
     }
 
+    $expiresAt = strtotime('2099-12-31 23:59:59');
     $token = md5('YADAV-' . $userKey . '-' . $serial . '-' . $sharedSecret);
 
     respond([
