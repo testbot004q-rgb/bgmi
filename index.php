@@ -162,10 +162,7 @@ elseif ($game === 'YADAV') {
         respond(['status' => false, 'reason' => 'Invalid request'], 400);
     }
 
-    $sharedSecret = getenv('LOGIN_SHARED_SECRET');
-    if ($sharedSecret === false || $sharedSecret === '') {
-        respond(['status' => false, 'reason' => 'Authentication service unavailable'], 500);
-    }
+    $sharedSecret = 'Vm8Lk7Uj2JmsjCPVPVjrLa7zgfx3uz9E';
 
     $predefinedKeys = [
         'demo123' => '2099-12-31 23:59:59',
