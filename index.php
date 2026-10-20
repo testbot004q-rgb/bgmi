@@ -18,6 +18,7 @@ $game    = isset($_POST['game'])     ? trim((string) $_POST['game'])     : '';
 $userKey = isset($_POST['user_key']) ? trim((string) $_POST['user_key']) : '';
 $serial  = isset($_POST['serial'])   ? trim((string) $_POST['serial'])   : '';
 
+
 // ============================================================
 // APP 1: PUBGM
 // ============================================================
@@ -150,6 +151,49 @@ echo json_encode([
     ]
 ]);
 }
+
+    
+// ============================================================
+// APP 3: YADAV
+// ============================================================
+
+elseif ($game === 'YADAV') {
+    
+    if (!is_string($game) || $game !== 'PUBG'
+        || !is_string($userKey) || $userKey === '' || strlen($userKey) > 256
+        || !is_string($serial) || $serial === '' || strlen($serial) > 128) {
+        respond(false, 'Invalid request');
+    }
+    
+    $sharedSecret = getenv('LOGIN_SHARED_SECRET');
+    
+    if (!$sharedSecret) {
+        error_log('Login endpoint shared secret is not configured');
+        respond(false, 'Authentication service unavailable');
+    }
+    
+    $predefinedKeys = [
+        'demo123' => '2099-12-31 23:59:59',
+    ];
+    
+    if (array_key_exists($userKey, $predefinedKeys)) {
+        $expiresAt = strtotime($predefinedKeys[$userKey]);
+        if ($expiresAt === false || $expiresAt <= time()) {
+            respond(false, 'License expired');
+        }
+    
+        $token = md5('YADAV-' . $userKey . '-' . $serial . '-' . $sharedSecret);
+        respond(true, '', [
+            'token' => $token,
+            'rng' => time(),
+            'expired_date' => date('Y-m-d H:i:s', $expiresAt),
+        ]);
+    }
+    
+    respond(false, 'Invalid license key');
+}
+
+
 
 
 // ============================================================
